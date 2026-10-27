@@ -3,6 +3,7 @@ __pycache__/
 screenshots/
 blob-report/
 .pytest_cache
+Reports/*.html
 
 #VS Code files
 .vscode

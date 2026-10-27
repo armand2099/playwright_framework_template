@@ -8,7 +8,7 @@ from pathlib import Path
 from playwright.async_api import Browser, async_playwright, Playwright, Page
 
 #Variable declaration
-HEADLESS = False
+HEADLESS = True
 image_name = f"report_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.png"
 file_name = os.path.join(os.getcwd(), "Reports", "screenshots", image_name)
 
