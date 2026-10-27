@@ -2,7 +2,7 @@ name: Report Deploy
 
 on:
   push:
-
+  workflow_dispatch:
 jobs:
   test:
     uses: ./.github/workflows/python-app.yml
