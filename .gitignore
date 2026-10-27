@@ -10,4 +10,4 @@ Reports/*.html
 
 #Authorization cookies/credentials
 auth/*.json
-auth/google_creds.py
+#auth/google_creds.py

@@ -37,7 +37,7 @@ A small framework template using Playwright with Python.
 pip install playwright
 playwright install
 pip install pytest
-pip install plytest-playwright
+pip install pytest-playwright
 pip install pytest-html
 pip install pytest-asyncio
 pip install pytest-xdist
