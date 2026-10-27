@@ -1,0 +1,12 @@
+venv/
+__pycache__/
+screenshots/
+blob-report/
+.pytest_cache
+
+#VS Code files
+.vscode
+
+#Authorization cookies/credentials
+auth/*.json
+auth/google_creds.py
