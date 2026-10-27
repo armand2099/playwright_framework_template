@@ -1,0 +1,23 @@
+name: Report Deploy
+
+on:
+  push:
+
+jobs:
+  test:
+    uses: ./.github/workflows/python-app.yml
+    permissions:
+      contents: read
+      checks: write
+  deploy:
+      needs: test
+      if: always() # Deploy even if some test assertions failed, so you can inspect the report
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}report.html
+      runs-on: ubuntu-latest
+      steps:
+        # Step 2: Deploy the uploaded artifact to GitHub Pages
+        - name: Deploy to GitHub Pages
+          id: deployment
+          uses: actions/deploy-pages@v4
