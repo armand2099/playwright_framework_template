@@ -34,6 +34,18 @@ jobs:
     - name: Test with pytest and Chrome
       run: |
         python -m pytest -n 3 -v -s tests -m "not AUTH"
+    - name: Upload Test Report
+      if: always() # Ensures the report is uploaded even if tests fail
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-html-report-chrome
+        path: Reports/report.html
     - name: Test with pytest and Firefox
       run: |
         python -m pytest --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
+    - name: Upload Test Report
+      if: always() # Ensures the report is uploaded even if tests fail
+      uses: actions/upload-artifact@v4
+      with:
+        name: pytest-html-report-firefox
+        path: Reports/report.html
