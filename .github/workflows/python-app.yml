@@ -33,7 +33,8 @@ jobs:
         pip install pytest-xdist
     - name: Test with pytest and Chrome
       run: |
-        python -m pytest -n 3 -v -s tests -m "not AUTH"
+        #python -m pytest -n 3 -v -s tests -m "not AUTH"
+        python -m pytest --md-report --md-report-verbose=1 -n 3 -v -s tests -m "not AUTH" >> $GITHUB_STEP_SUMMARY
     - name: Upload Test Report
       if: always() # Ensures the report is uploaded even if tests fail
       uses: actions/upload-artifact@v4
@@ -42,7 +43,8 @@ jobs:
         path: Reports/report.html
     - name: Test with pytest and Firefox
       run: |
-        python -m pytest --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
+        #python -m pytest --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
+        python -m pytest --browser-type=Firefox --md-report --md-report-verbose=1 -n 3 -v -s tests -m "not AUTH" >> $GITHUB_STEP_SUMMARY
     - name: Upload Test Report
       if: always() # Ensures the report is uploaded even if tests fail
       uses: actions/upload-artifact@v4
