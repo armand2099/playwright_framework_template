@@ -9,7 +9,11 @@ on:
 
 permissions:
   contents: read
-
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 jobs:
   build:
 
@@ -35,20 +39,31 @@ jobs:
     - name: Test with pytest and Chrome
       run: |
         #python -m pytest -n 3 -v -s tests -m "not AUTH"
-        python -m pytest --md-report --md-report-verbose=1 -n 3 -v -s tests -m "not AUTH" >> $GITHUB_STEP_SUMMARY
+        python -m pytest --html=Reports/report.html --self-contained-html -n 3 -v -s tests -m "not AUTH"
     - name: Upload Test Report
       if: always() # Ensures the report is uploaded even if tests fail
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-pages-artifact@v3
       with:
-        name: pytest-html-report-chrome
-        path: Reports/report.html
+        path: Reports/
     - name: Test with pytest and Firefox
       run: |
         #python -m pytest --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
-        python -m pytest --browser-type=Firefox --md-report --md-report-verbose=1 -n 3 -v -s tests -m "not AUTH" >> $GITHUB_STEP_SUMMARY
+        python -m pytest --html=Reports/report.html --self-contained-html --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
     - name: Upload Test Report
       if: always() # Ensures the report is uploaded even if tests fail
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-pages-artifact@v3
       with:
-        name: pytest-html-report-firefox
         path: Reports/report.html
+
+  deploy:
+    needs: build
+    if: always() # Deploy even if some test assertions failed, so you can inspect the report
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}report.html
+    runs-on: ubuntu-latest
+    steps:
+      # Step 2: Deploy the uploaded artifact to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
