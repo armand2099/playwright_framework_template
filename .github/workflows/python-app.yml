@@ -31,6 +31,7 @@ jobs:
         pip install pytest-html
         pip install pytest-asyncio
         pip install pytest-xdist
+        pip install pytest pytest-md-report
     - name: Test with pytest and Chrome
       run: |
         #python -m pytest -n 3 -v -s tests -m "not AUTH"
