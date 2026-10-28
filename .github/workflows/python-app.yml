@@ -36,7 +36,7 @@ jobs:
         pip install pytest-html
         pip install pytest-asyncio
         pip install pytest-xdist
-        pip install pytest pytest-md-report
+        pip install pytest-rerunfailures
     - name: Test with pytest and Chrome
       run: |
         python -m pytest --html=Reports/chrome/report_ch.html --self-contained-html -n 3 -v -s tests -m "not AUTH"
