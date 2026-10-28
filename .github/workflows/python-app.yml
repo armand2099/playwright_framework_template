@@ -62,3 +62,9 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Add Report Links to Workflow Summary
+        if: always()
+        run: |
+          echo "## 📊 Test Reports" >> $GITHUB_STEP_SUMMARY
+          echo "* 🌐 [Chrome Test Report](https://armand2099.github.io/playwright_framework_template/chrome/report_ch.html)" >> $GITHUB_STEP_SUMMARY
+          echo "* 🌐 [Firefox Test Report](https://armand2099.github.io/playwright_framework_template/firefox/report_ff.html)" >> $GITHUB_STEP_SUMMARY
