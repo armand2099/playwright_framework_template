@@ -9,7 +9,11 @@ on:
 
 permissions:
   contents: read
-
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 jobs:
   build:
 
@@ -31,9 +35,36 @@ jobs:
         pip install pytest-html
         pip install pytest-asyncio
         pip install pytest-xdist
+        pip install pytest pytest-md-report
     - name: Test with pytest and Chrome
       run: |
-        python -m pytest -n 3 -v -s tests -m "not AUTH"
+        #python -m pytest -n 3 -v -s tests -m "not AUTH"
+        python -m pytest --html=Reports/chrome/report.html --self-contained-html -n 3 -v -s tests -m "not AUTH"
+   
     - name: Test with pytest and Firefox
       run: |
-        python -m pytest --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
+        #python -m pytest --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
+        python -m pytest --html=Reports/firefox/report.html --self-contained-html --browser-type=Firefox -n 3 -v -s tests -m "not AUTH"
+    - name: Upload Test Report
+      if: always() # Ensures the report is uploaded even if tests fail
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: Reports/
+  deploy:
+    needs: build
+    if: always() # Deploy even if some test assertions failed, so you can inspect the report
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      # Step 2: Deploy the uploaded artifact to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Add Report Links to Workflow Summary
+        if: always()
+        run: |
+          echo "## 📊 Test Reports" >> $GITHUB_STEP_SUMMARY
+          echo "* 🌐 [Chrome Test Report](https://armand2099.github.io/playwright_framework_template/chrome/report_ch.html)" >> $GITHUB_STEP_SUMMARY
+          echo "* 🌐 [Firefox Test Report](https://armand2099.github.io/playwright_framework_template/firefox/report_ff.html)" >> $GITHUB_STEP_SUMMARY
