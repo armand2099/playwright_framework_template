@@ -55,7 +55,7 @@ jobs:
     if: always() # Deploy even if some test assertions failed, so you can inspect the report
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}report.html
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       # Step 2: Deploy the uploaded artifact to GitHub Pages
